@@ -33,5 +33,5 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/acbgbca/playwright-proxy:${GITHUB_REF_NAME}
+          ghcr.io/acbgbca/playwright-proxy:${{ github.ref_name }}
           ghcr.io/acbgbca/playwright-proxy:latest
