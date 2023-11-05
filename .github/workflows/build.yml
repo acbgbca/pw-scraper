@@ -1,6 +1,11 @@
 name: Build Playwright Proxy
 
 on:
+  workflow_dispatch:
+    inputs:
+      log_level:
+        description: "Log Level"
+        default: "debug"
   push:
     branches: [ "main" ]
   pull_request:
