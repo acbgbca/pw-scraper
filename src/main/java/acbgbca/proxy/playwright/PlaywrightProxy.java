@@ -1,5 +1,7 @@
 package acbgbca.proxy.playwright;
 
+import java.util.Enumeration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.LoadState;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 public class PlaywrightProxy {
@@ -33,7 +36,13 @@ public class PlaywrightProxy {
     }
 
     @GetMapping(value = "/", produces = MimeTypeUtils.TEXT_HTML_VALUE)
-    public ResponseEntity<String> proxyRequest(@RequestParam("url") String url) {
+    public ResponseEntity<String> proxyRequest(HttpServletRequest request, @RequestParam("url") String url) {
+        log.debug("Request headers:");
+        for (Enumeration<String> headerNames = request.getHeaderNames(); headerNames.hasMoreElements(); ) {
+            String header = headerNames.nextElement();
+            log.debug("{}: {}", header, request.getHeader(header));
+        }
+        
         Long startTime = System.currentTimeMillis();
         log.info("Retrieving content from location: {}", url);
         try (Playwright playwright = Playwright.create()) {
