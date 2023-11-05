@@ -35,7 +35,3 @@ jobs:
         tags: |
           ghcr.io/acbgbca/playwright-proxy:${GITHUB_REF_NAME}
           ghcr.io/acbgbca/playwright-proxy:latest
-    - name: Increment version
-      run: mvn versions:set -DnewVersion=$(echo ${GITHUB_REF_NAME} | awk -F. -v OFS=. '{$NF += 1 ; print}')
-    - name: Commit updated file
-      run: git add pom.xml && git commit -m 'chore increment version for next release'
