@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>acbgbca.proxy</groupId>
 	<artifactId>playwright-proxy</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Proxy</name>
-	<description>Proxy</description>
+	<version>0.1-SNAPSHOT</version>
+	<name>Playwright Proxy</name>
+	<description>Playwright Proxy</description>
 	<packaging>jar</packaging>
 	<properties>
 		<java.version>21</java.version>
