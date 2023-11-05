@@ -53,4 +53,9 @@
 		</plugins>
 	</build>
 
+	<scm>
+		<connection>scm:git:https://github.com/acbgbca/playwright-proxy.git</connection>
+		<tag>HEAD</tag>
+	</scm>
+
 </project>
