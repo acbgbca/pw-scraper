@@ -1,6 +1,11 @@
 name: Build and Deploy Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      log_level:
+        description: "Log Level"
+        default: "debug"
   release:
     types: [ created ]
 
