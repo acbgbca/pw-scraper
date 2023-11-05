@@ -1,4 +1,4 @@
-name: Build Playwright Proxy
+name: Build and Deploy Release
 
 on:
   release:

@@ -1,4 +1,4 @@
-name: Build Playwright Proxy
+name: Build Alpha Release
 
 on:
   workflow_dispatch:
