@@ -1,4 +1,4 @@
-name: Build Alpha Release
+name: Verify Pull Requests
 
 on:
   workflow_dispatch:
