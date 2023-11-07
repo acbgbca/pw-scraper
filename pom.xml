@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>acbgbca.proxy</groupId>
 	<artifactId>playwright-proxy</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2</version>
 	<name>Playwright Proxy</name>
 	<description>Playwright Proxy</description>
 	<packaging>jar</packaging>
