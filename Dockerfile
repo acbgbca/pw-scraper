@@ -6,6 +6,8 @@ ARG USER_GID=1000
 
 RUN groupadd --gid $USER_GID $USERNAME && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 
+RUN mkdir -p /opt/playwright/browsers && chown -R ${USERNAME}:${USERNAME} /opt/playwright && chmod -R 777 /opt/playwright
+
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get -y install --no-install-recommends curl libglib2.0-0\
  libnss3\
  libnspr4\
@@ -34,6 +36,8 @@ COPY target/playwright-proxy.jar /playwright-proxy.jar
 
 HEALTHCHECK --interval=5m --timeout=3s \
     CMD curl -sf http://localhost:8080/actuator/health || exit 1
+
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers
 
 EXPOSE 8080
 
