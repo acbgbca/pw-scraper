@@ -21,7 +21,6 @@ import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.LoadState;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 public class PlaywrightProxy {
@@ -36,13 +35,7 @@ public class PlaywrightProxy {
     }
 
     @GetMapping(value = "/", produces = MimeTypeUtils.TEXT_HTML_VALUE)
-    public ResponseEntity<String> proxyRequest(HttpServletRequest request, @RequestParam("url") String url) {
-        log.debug("Request headers:");
-        for (Enumeration<String> headerNames = request.getHeaderNames(); headerNames.hasMoreElements(); ) {
-            String header = headerNames.nextElement();
-            log.debug("{}: {}", header, request.getHeader(header));
-        }
-        
+    public ResponseEntity<String> proxyRequest(@RequestParam("url") String url) {
         Long startTime = System.currentTimeMillis();
         log.info("Retrieving content from location: {}", url);
         try (Playwright playwright = Playwright.create()) {
