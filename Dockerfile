@@ -32,7 +32,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get -y instal
 
 USER ${USER_UID}:${USER_GID}
 
-COPY target/playwright-proxy.jar /playwright-proxy.jar
+COPY target/quarkus-app /quarkus-app
 
 HEALTHCHECK --interval=5m --timeout=3s \
     CMD curl -sf http://localhost:8080/actuator/health || exit 1
@@ -41,4 +41,4 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers
 
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-Xms50M", "-jar", "/playwright-proxy.jar" ]
+ENTRYPOINT [ "java", "-Xms50M", "-XX:MinHeapFreeRatio=10", "-XX:MaxHeapFreeRatio=20", "-jar", "/quarkus-app/quarkus-run.jar" ]
