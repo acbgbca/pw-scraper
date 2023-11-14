@@ -41,4 +41,4 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers
 
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-DspringAot=true", "-Xss512k", "-XX:+UseCompressedOops", "-Xmx100m", "-jar", "/playwright-proxy.jar" ]
+ENTRYPOINT [ "java", "-DspringAot=true", "-XX:MinHeapFreeRatio=5", "-XX:MaxHeapFreeRatio=10", "-XX:+UseCompressedOops", "-XX:+UseStringDeduplication", "-jar", "/playwright-proxy.jar" ]

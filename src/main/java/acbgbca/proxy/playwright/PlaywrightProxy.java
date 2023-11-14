@@ -1,7 +1,5 @@
 package acbgbca.proxy.playwright;
 
-import java.util.Enumeration;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -29,8 +27,12 @@ public class PlaywrightProxy {
 
     @PostConstruct
     public void init() {
+        log.info("Starting init");
         try (Playwright playwright = Playwright.create()) {
             log.info("Browsers downloaded");
+        } catch (Exception e) {
+            log.error("Error setting up Playwright", e);
+            System.exit(1);
         }
     }
 
@@ -38,10 +40,11 @@ public class PlaywrightProxy {
     public ResponseEntity<String> proxyRequest(@RequestParam("url") String url) {
         Long startTime = System.currentTimeMillis();
         log.info("Retrieving content from location: {}", url);
-        try (Playwright playwright = Playwright.create()) {
+        try (
+            Playwright playwright = Playwright.create();
             Browser browser = playwright.chromium().launch();
             Page page = browser.newPage();
-
+        ) {
             // Load page and wait for content to load
             Response pageResponse = page.navigate(url);
             page.waitForLoadState(LoadState.NETWORKIDLE);
@@ -67,6 +70,8 @@ public class PlaywrightProxy {
             
             log.info("Retrieved content ins {} milliseconds", System.currentTimeMillis() - startTime);
             return response;
+        } finally {
+            Runtime.getRuntime().gc();
         }
     }
     

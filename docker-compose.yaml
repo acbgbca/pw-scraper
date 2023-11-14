@@ -4,4 +4,6 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./browsers:/opt/playwright/browsers
+      - browsers:/opt/playwright/browsers
+volumes:
+  browsers:
