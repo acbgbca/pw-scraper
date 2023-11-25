@@ -1,7 +1,6 @@
 package acbgbca.proxy.playwright;
 
-import java.net.http.HttpHeaders;
-import java.util.Enumeration;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +34,16 @@ public class PlaywrightProxy {
         
         Long startTime = System.currentTimeMillis();
         log.info("Retrieving content from location: {}", url);
-        try (Playwright playwright = Playwright.create()) {
+        try (
+            Playwright playwright = Playwright.create();
             Browser browser = playwright.chromium().launch();
             Page page = browser.newPage();
-
+        ) {
+            // Don't download images
+            page.route(Pattern.compile(".*\\.(jpg|gif|png)"), route -> {
+                log.info("Aborting {}", route.toString());
+                route.abort();
+            });
             // Load page and wait for content to load
             Response pageResponse = page.navigate(url);
             page.waitForLoadState(LoadState.NETWORKIDLE);
@@ -61,6 +66,9 @@ public class PlaywrightProxy {
             log.info("Retrieved content ins {} milliseconds", System.currentTimeMillis() - startTime);
             return response.build();
         } finally {
+            // Force run a FULL GC cycle.
+            // Without this Java will run a partial GC which doesn't reclaim as much memory.
+            // Drops the post retrieve memory usage by about 20%
             System.gc();
         }
         
