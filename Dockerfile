@@ -1,4 +1,4 @@
-FROM openjdk:21-slim-bullseye
+FROM openjdk:23-slim-bullseye
 
 ARG USERNAME=playwright
 ARG USER_UID=1000
