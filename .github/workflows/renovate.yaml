@@ -6,7 +6,7 @@ on:
         description: "Log Level"
         default: "debug"
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 * * * *'
 jobs:
   renovate:
     runs-on: ubuntu-latest
