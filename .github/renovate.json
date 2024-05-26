@@ -1,0 +1,12 @@
+{
+    "platform": "github",
+    "assignees": ["acbgbca"],
+    "prHourlyLimit": 0,
+    "ignoreTests": true,
+    "fileMatch": [
+        "(^|/|\\.)pom\\.xml$",
+        "^(((\\.mvn)|(\\.m2))/)?settings\\.xml$",
+        "(^|/)\\.mvn/extensions\\.xml$"
+    ],
+    "versioning": "maven"
+}
