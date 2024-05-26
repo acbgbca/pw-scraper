@@ -2,5 +2,16 @@
     "platform": "github",
     "assignees": ["acbgbca"],
     "prHourlyLimit": 0,
-    "ignoreTests": false
+    "ignoreTests": false,
+    "packageRules": [
+        {
+            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+            "automerge": true
+        },
+        {
+            "matchDepTypes": ["devDependencies"],
+            "automerge": true
+        }
+    ],
+    "platformAutomerge": true
 }
