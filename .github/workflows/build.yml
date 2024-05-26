@@ -6,8 +6,7 @@ on:
       log_level:
         description: "Log Level"
         default: "debug"
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - main
     paths-ignore:
