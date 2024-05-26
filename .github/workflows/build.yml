@@ -24,6 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Setup Git
+      run: |
+        git config --global user.name 'Deploy Bot'
+        git config --global user.email '60839662+acbgbca@users.noreply.github.com'
     - name: Set up JDK 21
       uses: actions/setup-java@v3
       with:
