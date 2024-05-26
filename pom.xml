@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>acbgbca.proxy</groupId>
 	<artifactId>playwright-proxy</artifactId>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>Playwright Proxy</name>
 	<description>Playwright Proxy</description>
 	<packaging>jar</packaging>
@@ -54,7 +54,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/acbgbca/playwright-proxy.git</connection>
-		<tag>playwright-proxy-0.2</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 </project>
