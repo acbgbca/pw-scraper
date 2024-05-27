@@ -7,8 +7,10 @@ on:
         description: "Log Level"
         default: "debug"
   push:
-    tags:
-      - '*'
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
 
 jobs:
   build:
@@ -26,10 +28,17 @@ jobs:
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
     - name: Get version
-      run: echo "version=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`" >> $GITHUB_ENV
+      run: |
+        MVN_VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
+        MAJOR_VERSION=`echo $VERSION|grep -o "[0-9]*\."|head -1`
+        echo "mvn_version=$MVN_VERSION" >> $GITHUB_ENV
+        echo "major_version=$MAJOR_VERSION" >> $GITHUB_ENV
+        echo "docker_version=$MAJOR_VERSION${{ github.run_number }}" >> $GITHUB_ENV
     - name: Debug
       run: |
-        echo "Version: ${{ env.version }}"
+        echo "MVN Version: ${{ env.mvn_version }}"
+        echo "Major Version: ${{ env.major_version }}"
+        echo "Docker Version: ${{ env.docker_version }}"
     - name: Setup Docker buildx
       uses: docker/setup-buildx-action@v2
     - name: Log in to the Container registry
@@ -44,5 +53,5 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/acbgbca/playwright-proxy:${{ env.version }}
+          ghcr.io/acbgbca/playwright-proxy:${{ env.docker_version }}
           ghcr.io/acbgbca/playwright-proxy:latest
