@@ -28,7 +28,7 @@ jobs:
     - name: Get version
       run: |
         MVN_VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
-        MAJOR_VERSION=`echo $VERSION|grep -o "[0-9]*\."|head -1`
+        MAJOR_VERSION=`echo $MVN_VERSION|grep -o "[0-9]*\."|head -1`
         echo "mvn_version=$MVN_VERSION" >> $GITHUB_ENV
         echo "major_version=$MAJOR_VERSION" >> $GITHUB_ENV
         echo "docker_version=$MAJOR_VERSION${{ github.run_number }}" >> $GITHUB_ENV
@@ -37,6 +37,7 @@ jobs:
         echo "MVN Version: ${{ env.mvn_version }}"
         echo "Major Version: ${{ env.major_version }}"
         echo "Docker Version: ${{ env.docker_version }}"
+        echo "Github run number: ${{ github.run_number }}"
     - name: Setup Docker buildx
       uses: docker/setup-buildx-action@v2
     - name: Log in to the Container registry
