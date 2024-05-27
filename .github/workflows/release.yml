@@ -6,16 +6,17 @@ on:
       log_level:
         description: "Log Level"
         default: "debug"
-  release:
-    types: [ created ]
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up JDK 21
       uses: actions/setup-java@v3
       with:
@@ -23,7 +24,20 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B clean package --file pom.xml
+    - name: Get version
+      run: |
+        MVN_VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
+        MAJOR_VERSION=`echo $MVN_VERSION|grep -o "[0-9]*\."|head -1`
+        echo "mvn_version=$MVN_VERSION" >> $GITHUB_ENV
+        echo "major_version=$MAJOR_VERSION" >> $GITHUB_ENV
+        echo "docker_version=${MAJOR_VERSION}${{ github.run_number }}" >> $GITHUB_ENV
+    - name: Debug
+      run: |
+        echo "MVN Version: ${{ env.mvn_version }}"
+        echo "Major Version: ${{ env.major_version }}"
+        echo "Docker Version: ${{ env.docker_version }}"
+        echo "Github run number: ${{ github.run_number }}"
     - name: Setup Docker buildx
       uses: docker/setup-buildx-action@v2
     - name: Log in to the Container registry
@@ -38,5 +52,5 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/acbgbca/playwright-proxy:${{ github.ref_name }}
+          ghcr.io/acbgbca/playwright-proxy:${{ env.docker_version }}
           ghcr.io/acbgbca/playwright-proxy:latest

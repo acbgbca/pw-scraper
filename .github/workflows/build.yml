@@ -6,10 +6,6 @@ on:
       log_level:
         description: "Log Level"
         default: "debug"
-  push:
-    branches: [ "main" ]
-    paths-ignore:
-      - '**.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,9 +13,7 @@ concurrency:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 21
