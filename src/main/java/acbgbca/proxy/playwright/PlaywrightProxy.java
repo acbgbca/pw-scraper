@@ -1,18 +1,9 @@
 package acbgbca.proxy.playwright;
 
-import java.util.Enumeration;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MimeTypeUtils;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.Page;
@@ -21,9 +12,12 @@ import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.LoadState;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 
-@RestController
+@Path("/content")
 public class PlaywrightProxy {
 
     private Logger log = LoggerFactory.getLogger(PlaywrightProxy.class);
@@ -35,20 +29,21 @@ public class PlaywrightProxy {
         }
     }
 
-    @GetMapping(value = "/", produces = MimeTypeUtils.TEXT_HTML_VALUE)
-    public ResponseEntity<String> proxyRequest(HttpServletRequest request, @RequestParam("url") String url) {
-        log.debug("Request headers:");
-        for (Enumeration<String> headerNames = request.getHeaderNames(); headerNames.hasMoreElements(); ) {
-            String header = headerNames.nextElement();
-            log.debug("{}: {}", header, request.getHeader(header));
-        }
+    @GET
+    public jakarta.ws.rs.core.Response proxyRequest(@QueryParam("url") String url) {
         
         Long startTime = System.currentTimeMillis();
         log.info("Retrieving content from location: {}", url);
-        try (Playwright playwright = Playwright.create()) {
+        try (
+            Playwright playwright = Playwright.create();
             Browser browser = playwright.chromium().launch();
             Page page = browser.newPage();
-
+        ) {
+            // Don't download images
+            page.route(Pattern.compile(".*\\.(jpg|gif|png)"), route -> {
+                log.info("Aborting {}", route.toString());
+                route.abort();
+            });
             // Load page and wait for content to load
             Response pageResponse = page.navigate(url);
             page.waitForLoadState(LoadState.NETWORKIDLE);
@@ -67,14 +62,16 @@ public class PlaywrightProxy {
                 document.head.insertBefore(element, document.head.firstChild);
                 """, url));
 
-            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-            headers.add(HttpHeaders.CONTENT_TYPE.toString(), pageResponse.headerValue(HttpHeaders.CONTENT_TYPE.toString()));
-            headers.add(HttpHeaders.CONTENT_LOCATION, url);
-            ResponseEntity<String> response = new ResponseEntity<String>(page.content(), headers, HttpStatusCode.valueOf(pageResponse.status()));
-            
+            ResponseBuilder response = jakarta.ws.rs.core.Response.ok(page.content(), pageResponse.headerValue("Content-Type"));
             log.info("Retrieved content ins {} milliseconds", System.currentTimeMillis() - startTime);
-            return response;
+            return response.build();
+        } finally {
+            // Force run a FULL GC cycle.
+            // Without this Java will run a partial GC which doesn't reclaim as much memory.
+            // Drops the post retrieve memory usage by about 20%
+            System.gc();
         }
+        
     }
     
 }
