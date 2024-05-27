@@ -31,7 +31,7 @@ jobs:
         MAJOR_VERSION=`echo $MVN_VERSION|grep -o "[0-9]*\."|head -1`
         echo "mvn_version=$MVN_VERSION" >> $GITHUB_ENV
         echo "major_version=$MAJOR_VERSION" >> $GITHUB_ENV
-        echo "docker_version=$MAJOR_VERSION${{ github.run_number }}" >> $GITHUB_ENV
+        echo "docker_version=${MAJOR_VERSION}${{ github.run_number }}" >> $GITHUB_ENV
     - name: Debug
       run: |
         echo "MVN Version: ${{ env.mvn_version }}"
