@@ -22,7 +22,7 @@ public class PWScaper {
 
   @PostConstruct
   public void init() {
-    try (Playwright playwright = Playwright.create()) {
+    try (Playwright unused = Playwright.create()) {
       log.info("Browsers downloaded");
     }
   }
