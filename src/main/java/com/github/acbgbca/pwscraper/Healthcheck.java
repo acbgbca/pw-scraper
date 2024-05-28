@@ -1,4 +1,4 @@
-package acbgbca.proxy.playwright;
+package com.github.acbgbca.pwscraper;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
