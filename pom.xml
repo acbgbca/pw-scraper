@@ -50,6 +50,7 @@
 				<configuration>
 					<xmlOutput>true</xmlOutput>
 					<htmlOutput>true</htmlOutput>
+					<sarifOutput>true</sarifOutput>
 					<failOnError>true</failOnError>
 					<threshold>low</threshold>
 				</configuration>

@@ -28,3 +28,7 @@ jobs:
         cache: maven
     - name: Run test suite
       run: mvn -B clean verify --file pom.xml
+    - name: Upload Spotbugs SARIF
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: target/spotbugsSarif.json
