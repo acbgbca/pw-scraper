@@ -54,7 +54,10 @@
         <version>2.43.0</version>
         <configuration>
           <java>
+            <cleanthat></cleanthat>
             <googleJavaFormat></googleJavaFormat>
+            <importOrder></importOrder>
+            <removeUnusedImports></removeUnusedImports>
           </java>
           <pom>
             <sortPom></sortPom>
