@@ -58,9 +58,9 @@ public class PWScaper {
             // Add a base tag with the correct base URL
             // Fixes display in browsers, won't help with scraping tools
             page.evaluate(String.format("""
-                const element = document.createElement('base');
-                element.href = '%s';
-                document.head.insertBefore(element, document.head.firstChild);
+                const element = document.createElement('base');%n\
+                element.href = '%s';%n\
+                document.head.insertBefore(element, document.head.firstChild);%n\
                 """, url));
 
             ResponseBuilder response = jakarta.ws.rs.core.Response.ok(page.content(), pageResponse.headerValue("Content-Type"));
