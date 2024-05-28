@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>acbgbca.proxy</groupId>
-	<artifactId>playwright-proxy</artifactId>
+	<artifactId>pw-scraper</artifactId>
 	<version>0.1</version>
-	<name>Playwright Proxy</name>
-	<description>Playwright Proxy</description>
+	<name>PW Scraper</name>
+	<description>A service for getting website content using Playwright</description>
 	<packaging>jar</packaging>
 	<properties>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
@@ -41,7 +41,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>playwright-proxy</finalName>
+		<finalName>pw-scraper</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -69,7 +69,7 @@
 	</build>
 
 	<scm>
-		<connection>scm:git:https://github.com/acbgbca/playwright-proxy.git</connection>
+		<connection>scm:git:https://github.com/acbgbca/pw-scraper.git</connection>
 		<tag>HEAD</tag>
 	</scm>
 
