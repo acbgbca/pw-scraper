@@ -6,8 +6,8 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("/healthcheck")
 public class Healthcheck {
-    @GET
-    public jakarta.ws.rs.core.Response healthcheck() {
-        return jakarta.ws.rs.core.Response.ok("OK",MediaType.TEXT_PLAIN_TYPE).build();
-    }
+  @GET
+  public jakarta.ws.rs.core.Response healthcheck() {
+    return jakarta.ws.rs.core.Response.ok("OK", MediaType.TEXT_PLAIN_TYPE).build();
+  }
 }
