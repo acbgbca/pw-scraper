@@ -1,5 +1,11 @@
 services:
-  playwright:
+  pwscraper:
     build: .
     ports:
       - 8080:8080
+  nginx:
+    image: nginx
+    ports:
+      - 6080:80
+    volumes:
+      - ./src/test/resources/nginx/www:/usr/share/nginx/html
