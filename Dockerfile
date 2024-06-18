@@ -1,3 +1,9 @@
+FROM maven:3.9.7-amazoncorretto-21-debian as downloadBrowsers
+
+COPY pom.xml ./pom.xml
+RUN mkdir -p /opt/playwright/browsers && chmod -R 777 /opt/playwright
+RUN PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install"
+
 FROM openjdk:21-slim-bullseye
 
 ARG USERNAME=playwright
@@ -32,12 +38,15 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get -y instal
 
 USER ${USER_UID}:${USER_GID}
 
+COPY --from=downloadBrowsers --chown=${USER_UID}:${USER_GID} --chmod=777 /opt/playwright/browsers /opt/playwright/browsers
+
 COPY target/quarkus-app /quarkus-app
 
 HEALTHCHECK --interval=1m --timeout=3s \
     CMD curl -sf http://localhost:8080/healthcheck || exit 1
 
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
 EXPOSE 8080
 
