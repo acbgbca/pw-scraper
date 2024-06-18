@@ -10,6 +10,10 @@ ARG USERNAME=playwright
 ARG USER_UID=1000
 ARG USER_GID=1000
 
+LABEL org.opencontainers.image.source=https://github.com/acbgbca/pw-scraper
+LABEL org.opencontainers.image.description="A service to scrap or screenshot dynamic websites using Microsoft Playwright."
+LABEL org.opencontainers.image.licenses=AGPL3
+
 RUN groupadd --gid $USER_GID $USERNAME && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 
 RUN mkdir -p /opt/playwright/browsers && chown -R ${USERNAME}:${USERNAME} /opt/playwright && chmod -R 777 /opt/playwright
