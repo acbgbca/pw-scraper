@@ -1,6 +1,8 @@
 package com.github.acbgbca.pwscraper;
 
 import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.Browser.NewContextOptions;
+import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.ScreenshotOptions;
 import com.microsoft.playwright.Playwright;
@@ -12,6 +14,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import java.util.regex.Pattern;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +22,12 @@ import org.slf4j.LoggerFactory;
 public class PWScaper {
 
   private Logger log = LoggerFactory.getLogger(PWScaper.class);
+
+  @ConfigProperty(name = "browser.height")
+  private Integer defaultHeight;
+
+  @ConfigProperty(name = "browser.width")
+  private Integer defaultWidth;
 
   @PostConstruct
   public void init() {
@@ -32,9 +41,12 @@ public class PWScaper {
 
     Long startTime = System.currentTimeMillis();
     log.info("Retrieving content from location: {}", url);
+    NewContextOptions options = new NewContextOptions();
+    options.setScreenSize(defaultWidth, defaultHeight);
     try (Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch();
-        Page page = browser.newPage(); ) {
+        BrowserContext context = browser.newContext(options);
+        Page page = context.newPage(); ) {
       // Don't download images
       page.route(
           Pattern.compile(".*\\.(jpg|gif|png)"),
@@ -76,23 +88,27 @@ public class PWScaper {
   }
 
   @GET
-  @Path("/image")
-  public jakarta.ws.rs.core.Response getImage(@QueryParam("url") String url) {
+  @Path("/image.png")
+  public jakarta.ws.rs.core.Response getImage(
+      @QueryParam("url") String url,
+      @QueryParam("width") Integer widthParam,
+      @QueryParam("height") Integer heightParam) {
+    Integer browserWidth = widthParam != null ? widthParam : defaultWidth;
+    Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
 
     Long startTime = System.currentTimeMillis();
     log.info("Retrieving image from location: {}", url);
+    NewContextOptions contextOptions = new NewContextOptions();
+    contextOptions.setScreenSize(browserWidth, browserHeight);
+    contextOptions.setViewportSize(browserWidth, browserHeight);
     try (Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch();
-        Page page = browser.newPage(); ) {
+        BrowserContext browserContext = browser.newContext(contextOptions);
+        Page page = browserContext.newPage(); ) {
       // Load page and wait for content to load
       page.navigate(url);
       page.waitForLoadState(LoadState.NETWORKIDLE);
 
-      // // Gradually scroll the page down one screen at a time, waiting for the content to load
-      // for (int i = 0; i < 25; i++) {
-      //     page.mouse().wheel(0, page.viewportSize().height);
-      //     page.waitForLoadState(LoadState.NETWORKIDLE);
-      // }
       ScreenshotOptions options = new ScreenshotOptions();
       options.setFullPage(true);
 
@@ -110,22 +126,25 @@ public class PWScaper {
 
   @GET
   @Path("/pdf")
-  public jakarta.ws.rs.core.Response getPdf(@QueryParam("url") String url) {
+  public jakarta.ws.rs.core.Response getPdf(
+      @QueryParam("url") String url,
+      @QueryParam("width") Integer widthParam,
+      @QueryParam("height") Integer heightParam) {
+    Integer browserWidth = widthParam != null ? widthParam : defaultWidth;
+    Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
 
     Long startTime = System.currentTimeMillis();
     log.info("Retrieving pdf from location: {}", url);
+    NewContextOptions contextOptions = new NewContextOptions();
+    contextOptions.setScreenSize(browserWidth, browserHeight);
+    contextOptions.setViewportSize(browserWidth, browserHeight);
     try (Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch();
-        Page page = browser.newPage(); ) {
+        BrowserContext browserContext = browser.newContext(contextOptions);
+        Page page = browserContext.newPage(); ) {
       // Load page and wait for content to load
       page.navigate(url);
       page.waitForLoadState(LoadState.NETWORKIDLE);
-
-      // // Gradually scroll the page down one screen at a time, waiting for the content to load
-      // for (int i = 0; i < 25; i++) {
-      //     page.mouse().wheel(0, page.viewportSize().height);
-      //     page.waitForLoadState(LoadState.NETWORKIDLE);
-      // }
 
       ResponseBuilder response = jakarta.ws.rs.core.Response.ok(page.pdf(), "application/pdf");
       log.info("Retrieved pdf in {} milliseconds", System.currentTimeMillis() - startTime);
