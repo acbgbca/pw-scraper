@@ -3,6 +3,7 @@ package com.github.acbgbca.pwscraper;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.Browser.NewContextOptions;
 import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.ScreenshotOptions;
 import com.microsoft.playwright.Playwright;
@@ -29,6 +30,9 @@ public class PWScaper {
   @ConfigProperty(name = "browser.width")
   private Integer defaultWidth;
 
+  @ConfigProperty(name = "browser.default")
+  private Engine defaultBrowser;
+
   @PostConstruct
   public void init() {
     try (Playwright unused = Playwright.create()) {
@@ -37,14 +41,15 @@ public class PWScaper {
   }
 
   @GET
-  public jakarta.ws.rs.core.Response getHtml(@QueryParam("url") String url) {
+  public jakarta.ws.rs.core.Response getHtml(
+      @QueryParam("url") String url, @QueryParam("browser") Engine browserParam) {
 
     Long startTime = System.currentTimeMillis();
     log.info("Retrieving content from location: {}", url);
     NewContextOptions options = new NewContextOptions();
     options.setScreenSize(defaultWidth, defaultHeight);
     try (Playwright playwright = Playwright.create();
-        Browser browser = playwright.chromium().launch();
+        Browser browser = getBrowserType(playwright, browserParam).launch();
         BrowserContext context = browser.newContext(options);
         Page page = context.newPage(); ) {
       // Don't download images
@@ -92,7 +97,8 @@ public class PWScaper {
   public jakarta.ws.rs.core.Response getImage(
       @QueryParam("url") String url,
       @QueryParam("width") Integer widthParam,
-      @QueryParam("height") Integer heightParam) {
+      @QueryParam("height") Integer heightParam,
+      @QueryParam("browser") Engine browserParam) {
     Integer browserWidth = widthParam != null ? widthParam : defaultWidth;
     Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
 
@@ -102,7 +108,7 @@ public class PWScaper {
     contextOptions.setScreenSize(browserWidth, browserHeight);
     contextOptions.setViewportSize(browserWidth, browserHeight);
     try (Playwright playwright = Playwright.create();
-        Browser browser = playwright.chromium().launch();
+        Browser browser = getBrowserType(playwright, browserParam).launch();
         BrowserContext browserContext = browser.newContext(contextOptions);
         Page page = browserContext.newPage(); ) {
       // Load page and wait for content to load
@@ -129,7 +135,8 @@ public class PWScaper {
   public jakarta.ws.rs.core.Response getPdf(
       @QueryParam("url") String url,
       @QueryParam("width") Integer widthParam,
-      @QueryParam("height") Integer heightParam) {
+      @QueryParam("height") Integer heightParam,
+      @QueryParam("browser") Engine browserParam) {
     Integer browserWidth = widthParam != null ? widthParam : defaultWidth;
     Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
 
@@ -139,7 +146,7 @@ public class PWScaper {
     contextOptions.setScreenSize(browserWidth, browserHeight);
     contextOptions.setViewportSize(browserWidth, browserHeight);
     try (Playwright playwright = Playwright.create();
-        Browser browser = playwright.chromium().launch();
+        Browser browser = getBrowserType(playwright, browserParam).launch();
         BrowserContext browserContext = browser.newContext(contextOptions);
         Page page = browserContext.newPage(); ) {
       // Load page and wait for content to load
@@ -154,6 +161,21 @@ public class PWScaper {
       // Without this Java will run a partial GC which doesn't reclaim as much memory.
       // Drops the post retrieve memory usage by about 20%
       System.gc();
+    }
+  }
+
+  private BrowserType getBrowserType(Playwright playwright, Engine browserParam) {
+    Engine engine = browserParam != null ? browserParam : defaultBrowser;
+
+    switch (engine) {
+      case CHROMIUM:
+        return playwright.chromium();
+      case FIREFOX:
+        return playwright.firefox();
+      case WEBKIT:
+        return playwright.webkit();
+      default:
+        return playwright.chromium();
     }
   }
 }
