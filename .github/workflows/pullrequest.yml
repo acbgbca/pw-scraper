@@ -15,9 +15,7 @@ concurrency:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
@@ -26,6 +24,8 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+    - name: Install Playwright
+      run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
     - name: Run test suite
       run: mvn -B -ntp clean verify --file pom.xml
     - name: Upload Spotbugs SARIF
