@@ -40,4 +40,4 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/acbgbca/playwright-proxy:alpha
+          ghcr.io/acbgbca/pw-scraper:alpha
