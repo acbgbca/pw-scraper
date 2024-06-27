@@ -4,7 +4,8 @@
     "extends": ["config:recommended"],
     "platform": "github",
     "assignees": ["acbgbca"],
-    "prHourlyLimit": 0,
+    "prHourlyLimit": 1,
+    "prConcurrentLimit": 1,
     "ignoreTests": false,
     "packageRules": [
         {
@@ -16,5 +17,5 @@
             "automerge": true
         }
     ],
-    "platformAutomerge": true
+    "platformAutomerge": false
 }
