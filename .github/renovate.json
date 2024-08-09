@@ -7,6 +7,7 @@
     "prHourlyLimit": 1,
     "prConcurrentLimit": 3,
     "ignoreTests": false,
+    "stabilityDays": 3,
     "packageRules": [
         {
             "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
