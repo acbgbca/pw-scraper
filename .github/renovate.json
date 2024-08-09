@@ -2,12 +2,11 @@
     
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": ["config:recommended"],
-    "platform": "github",
     "assignees": ["acbgbca"],
     "prHourlyLimit": 1,
     "prConcurrentLimit": 3,
     "ignoreTests": false,
-    "stabilityDays": 3,
+    "minimumReleaseAge": "3 days",
     "packageRules": [
         {
             "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
