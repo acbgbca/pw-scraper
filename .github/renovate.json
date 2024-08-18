@@ -4,7 +4,6 @@
     "extends": ["config:recommended"],
     "assignees": ["acbgbca"],
     "prHourlyLimit": 1,
-    "prConcurrentLimit": 3,
     "ignoreTests": false,
     "minimumReleaseAge": "3 days",
     "packageRules": [
@@ -16,6 +15,5 @@
             "matchDepTypes": ["devDependencies"],
             "automerge": true
         }
-    ],
-    "platformAutomerge": false
+    ]
 }
