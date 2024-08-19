@@ -9,7 +9,14 @@
     "minimumReleaseAge": "3 days",
     "packageRules": [
         {
-            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+            "matchUpdateTypes": ["patch", "pin", "digest"],
+            "groupName": "Patches updates",
+            "groupSlug": "all-patch",
+            "automerge": true
+            
+        },
+        {
+            "matchUpdateTypes": ["minor"],
             "automerge": true
         },
         {
