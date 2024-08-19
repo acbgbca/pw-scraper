@@ -4,16 +4,25 @@
     "extends": ["config:recommended"],
     "assignees": ["acbgbca"],
     "prHourlyLimit": 1,
+    "prConcurrentLimit": 3,
     "ignoreTests": false,
     "minimumReleaseAge": "3 days",
     "packageRules": [
         {
-            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+            "matchUpdateTypes": ["patch", "pin", "digest"],
+            "groupName": "Patches updates",
+            "groupSlug": "all-patch",
+            "automerge": true
+            
+        },
+        {
+            "matchUpdateTypes": ["minor"],
             "automerge": true
         },
         {
             "matchDepTypes": ["devDependencies"],
             "automerge": true
         }
-    ]
+    ],
+    "platformAutomerge": false
 }
