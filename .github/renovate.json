@@ -7,21 +7,28 @@
     "prConcurrentLimit": 3,
     "ignoreTests": false,
     "minimumReleaseAge": "3 days",
+    "commitMessagePrefix": "[Renovate] ",
     "packageRules": [
         {
-            "matchUpdateTypes": ["patch", "pin", "digest"],
-            "groupName": "Patches updates",
-            "groupSlug": "all-patch",
-            "automerge": true
-            
-        },
-        {
-            "matchUpdateTypes": ["minor"],
+            "matchUpdateTypes": ["patch", "pin", "digest", "minor"],
             "automerge": true
         },
         {
             "matchDepTypes": ["devDependencies"],
             "automerge": true
+        },
+        {
+            "groupName": "Quarkus",
+            "matchPackageNames": [
+              "io.quarkus:**",
+              "io.quarkus.platform:**"
+            ]
+        },
+        {
+            "groupName": "Maven",
+            "matchPackageNames": [
+              "org.apache.maven.plugins:**"
+            ]
         }
     ],
     "platformAutomerge": false
