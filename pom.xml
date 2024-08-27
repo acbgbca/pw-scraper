@@ -16,8 +16,8 @@
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>3.13.3</quarkus.platform.version>
-    <surefire-plugin.version>3.4.0</surefire-plugin.version>
-    <failsafe-plugin.version>3.4.0</failsafe-plugin.version>
+    <surefire-plugin.version>3.5.0</surefire-plugin.version>
+    <failsafe-plugin.version>3.5.0</failsafe-plugin.version>
     <testcontainers.version>1.20.1</testcontainers.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
@@ -107,7 +107,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.24.0</version>
+        <version>3.25.0</version>
         <configuration>
           <format>net.sourceforge.pmd.renderers.SarifRenderer</format>
           <skipPmdError>true</skipPmdError>
