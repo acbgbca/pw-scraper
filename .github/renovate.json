@@ -2,7 +2,8 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:best-practices",
-        "schedule:weekly"
+        "schedule:weekly",
+        "group:allNonMajor"
     ],
     "assignees": ["acbgbca"],
     "prHourlyLimit": 1,
@@ -11,12 +12,6 @@
     "minimumReleaseAge": "3 days",
     "commitMessagePrefix": "[Renovate] ",
     "packageRules": [
-        {
-            "extends": [
-              "packages:allNonMajor"
-            ],
-            "groupName": "All non-major"
-          },
         {
             "groupName": "Quarkus",
             "matchPackageNames": [
