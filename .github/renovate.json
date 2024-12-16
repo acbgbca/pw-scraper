@@ -2,37 +2,15 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:best-practices",
-        "schedule:weekly"
+        "schedule:weekly",
+        "group:all"
     ],
     "assignees": ["acbgbca"],
     "prHourlyLimit": 1,
-    "prConcurrentLimit": 3,
+    "prConcurrentLimit": 2,
     "ignoreTests": false,
     "minimumReleaseAge": "3 days",
     "commitMessagePrefix": "[Renovate] ",
-    "packageRules": [
-        {
-            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-            "automerge": true,
-            "groupName": "all non-major dependencies",
-            "groupSlug": "all-minor-patch",
-            "matchPackageNames": [
-              "*"
-            ]
-        },
-        {
-            "groupName": "Quarkus",
-            "matchPackageNames": [
-              "io.quarkus:**",
-              "io.quarkus.platform:**"
-            ]
-        },
-        {
-            "groupName": "Maven",
-            "matchPackageNames": [
-              "org.apache.maven.plugins:**"
-            ]
-        }
-    ],
+    "automerge": true,
     "platformAutomerge": false
 }
