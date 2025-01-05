@@ -2,6 +2,7 @@ package com.github.acbgbca.pwscraper;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertTrue;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.config.HttpClientConfig;
@@ -123,6 +124,57 @@ class PWScaperTest {
             containsString("<p>Edit <code>src/App.js</code> and save to reload.</p>"),
             containsString(
                 "<a class=\"App-link\" href=\"https://reactjs.org\" target=\"_blank\" rel=\"noopener noreferrer\">Learn React</a>"));
+  }
+
+  @Test
+  void testGetContentWait() {
+    int wait = 5;
+    long current = System.currentTimeMillis();
+    given()
+        .config(
+            RestAssuredConfig.config()
+                .httpClient(
+                    HttpClientConfig.httpClientConfig().setParam("http.connection.timeout", 60000)))
+        .when()
+        .get("/content?url={url}&wait={wait}", baseUrl.toString(), wait)
+        .then()
+        .statusCode(200);
+
+    assertTrue(System.currentTimeMillis() > current + (wait * 1000));
+  }
+
+  @Test
+  void testGetImageWait() {
+    int wait = 5;
+    long current = System.currentTimeMillis();
+    given()
+        .config(
+            RestAssuredConfig.config()
+                .httpClient(
+                    HttpClientConfig.httpClientConfig().setParam("http.connection.timeout", 60000)))
+        .when()
+        .get("/content/image.png?url={url}&wait={wait}", baseUrl.toString(), wait)
+        .then()
+        .statusCode(200);
+
+    assertTrue(System.currentTimeMillis() > current + (wait * 1000));
+  }
+
+  @Test
+  void testGetPdfWait() {
+    int wait = 5;
+    long current = System.currentTimeMillis();
+    given()
+        .config(
+            RestAssuredConfig.config()
+                .httpClient(
+                    HttpClientConfig.httpClientConfig().setParam("http.connection.timeout", 60000)))
+        .when()
+        .get("/content/pdf?url={url}&wait={wait}", baseUrl.toString(), wait)
+        .then()
+        .statusCode(200);
+
+    assertTrue(System.currentTimeMillis() > current + (wait * 1000));
   }
 
   @ParameterizedTest
