@@ -14,6 +14,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
@@ -42,7 +43,9 @@ public class PWScaper {
 
   @GET
   public jakarta.ws.rs.core.Response getHtml(
-      @QueryParam("url") String url, @QueryParam("browser") Engine browserParam) {
+      @QueryParam("url") String url,
+      @QueryParam("browser") Engine browserParam,
+      @QueryParam("wait") Integer waitInSeconds) {
 
     Long startTime = System.currentTimeMillis();
     log.info("Retrieving content from location: {}", url);
@@ -62,6 +65,17 @@ public class PWScaper {
       // Load page and wait for content to load
       Response pageResponse = page.navigate(url);
       page.waitForLoadState(LoadState.NETWORKIDLE);
+
+      if (waitInSeconds != null) {
+        try {
+          log.debug("Waiting for {} seconds", waitInSeconds);
+          TimeUnit.SECONDS.sleep(waitInSeconds.longValue());
+          page.waitForLoadState(LoadState.NETWORKIDLE);
+        } catch (InterruptedException e) {
+          // Ignore
+          log.warn("Exception during wait", e);
+        }
+      }
 
       // Gradually scroll the page down one screen at a time, waiting for the content to load
       for (int i = 0; i < 25; i++) {
@@ -98,7 +112,8 @@ public class PWScaper {
       @QueryParam("url") String url,
       @QueryParam("width") Integer widthParam,
       @QueryParam("height") Integer heightParam,
-      @QueryParam("browser") Engine browserParam) {
+      @QueryParam("browser") Engine browserParam,
+      @QueryParam("wait") Integer waitInSeconds) {
     Integer browserWidth = widthParam != null ? widthParam : defaultWidth;
     Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
 
@@ -114,6 +129,16 @@ public class PWScaper {
       // Load page and wait for content to load
       page.navigate(url);
       page.waitForLoadState(LoadState.NETWORKIDLE);
+
+      if (waitInSeconds != null) {
+        try {
+          TimeUnit.SECONDS.sleep(waitInSeconds.longValue());
+          page.waitForLoadState(LoadState.NETWORKIDLE);
+        } catch (InterruptedException e) {
+          // Ignore
+          log.warn("Exception during wait", e);
+        }
+      }
 
       ScreenshotOptions options = new ScreenshotOptions();
       options.setFullPage(true);
@@ -136,7 +161,8 @@ public class PWScaper {
       @QueryParam("url") String url,
       @QueryParam("width") Integer widthParam,
       @QueryParam("height") Integer heightParam,
-      @QueryParam("browser") Engine browserParam) {
+      @QueryParam("browser") Engine browserParam,
+      @QueryParam("wait") Integer waitInSeconds) {
     Integer browserWidth = widthParam != null ? widthParam : defaultWidth;
     Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
 
@@ -152,6 +178,17 @@ public class PWScaper {
       // Load page and wait for content to load
       page.navigate(url);
       page.waitForLoadState(LoadState.NETWORKIDLE);
+
+      if (waitInSeconds != null) {
+        try {
+          log.debug("Waiting for {} seconds", waitInSeconds);
+          TimeUnit.SECONDS.sleep(waitInSeconds.longValue());
+          page.waitForLoadState(LoadState.NETWORKIDLE);
+        } catch (InterruptedException e) {
+          // Ignore
+          log.warn("Exception during wait", e);
+        }
+      }
 
       ResponseBuilder response = jakarta.ws.rs.core.Response.ok(page.pdf(), "application/pdf");
       log.info("Retrieved pdf in {} milliseconds", System.currentTimeMillis() - startTime);
