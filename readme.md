@@ -12,3 +12,15 @@ Run a local nginx with the test site.
 ```
 docker run -it --rm -p 6080:80 --name web -v ./src/test/resources/nginx/www:/usr/share/nginx/html nginx
 ```
+
+## Fix Code Style (Spotless)
+
+```
+mvn spotless:apply
+```
+
+## Run PI Test
+
+```
+mvn org.pitest:pitest-maven:mutationCoverage -DtimeoutConstant=10000
+```
