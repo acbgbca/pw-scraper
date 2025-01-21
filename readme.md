@@ -7,6 +7,9 @@ Work in progress.
 
 # Development
 
+To start the application within the dev container:
+```mvn quarkus:dev```
+
 Run a local nginx with the test site.
 
 ```

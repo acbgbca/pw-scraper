@@ -8,6 +8,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.ScreenshotOptions;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Response;
+import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.ScreenshotType;
 import io.quarkus.runtime.util.StringUtil;
@@ -97,19 +98,31 @@ public class PWScaper {
       Response pageResponse = page.navigate(url);
       page.waitForLoadState(LoadState.NETWORKIDLE);
 
+      // If user passed a selector, wait for the selector to be available
+      if (!StringUtil.isNullOrEmpty(waitSelector)) {
+        log.info("Waiting for selector: {}", waitSelector);
+        try {
+          page.waitForSelector(waitSelector);
+        } catch (TimeoutError e) {
+          log.error(
+              String.format(
+                  "Timeout waiting for selector %s in url %s. Returning page as is.",
+                  waitSelector, url),
+              e);
+        }
+        page.waitForLoadState(LoadState.NETWORKIDLE);
+      }
+
+      // If user passed a wait, wait for that number of seconds
       if (waitInSeconds != null) {
         try {
-          log.debug("Waiting for {} seconds", waitInSeconds);
+          log.info("Waiting for {} seconds", waitInSeconds);
           TimeUnit.SECONDS.sleep(waitInSeconds.longValue());
           page.waitForLoadState(LoadState.NETWORKIDLE);
         } catch (InterruptedException e) {
           // Ignore
           log.warn("Exception during wait", e);
         }
-      }
-
-      if (!StringUtil.isNullOrEmpty(waitSelector)) {
-        page.waitForSelector(waitSelector);
       }
 
       switch (fileType) {
