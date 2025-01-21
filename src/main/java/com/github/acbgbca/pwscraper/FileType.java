@@ -8,9 +8,9 @@ public enum FileType {
 
   static FileType getFileType(String filename) {
     String fileExtension =
-      filename.indexOf('.') >= 0 ? filename.substring(filename.lastIndexOf('.') + 1) : "";
-      fileExtension = fileExtension.toLowerCase();
-    
+        filename.indexOf('.') >= 0 ? filename.substring(filename.lastIndexOf('.') + 1) : "";
+    fileExtension = fileExtension.toLowerCase();
+
     switch (fileExtension) {
       case "pdf":
         return PDF;
