@@ -104,7 +104,11 @@ public class PWScaper {
         try {
           page.waitForSelector(waitSelector);
         } catch (TimeoutError e) {
-          log.error(String.format("Timeout waiting for selector %s in url %s. Returning page as is.", waitSelector, url), e);
+          log.error(
+              String.format(
+                  "Timeout waiting for selector %s in url %s. Returning page as is.",
+                  waitSelector, url),
+              e);
         }
         page.waitForLoadState(LoadState.NETWORKIDLE);
       }
