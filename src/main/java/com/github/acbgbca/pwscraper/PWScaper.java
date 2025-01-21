@@ -17,7 +17,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -26,9 +25,6 @@ import org.slf4j.LoggerFactory;
 
 @Path("/")
 public class PWScaper {
-
-  public static final Set<String> IMAGE_EXTENSIONS = Set.of("png", "jpg", "jpeg");
-  public static final Set<String> NON_HTML_EXTENSIONS = Set.of("png", "jpg", "jpeg", "pdf");
 
   private Logger log = LoggerFactory.getLogger(PWScaper.class);
 
@@ -75,12 +71,10 @@ public class PWScaper {
       @PathParam("file") String filename) {
     Integer browserWidth = widthParam != null ? widthParam : defaultWidth;
     Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
-    String fileExtension =
-        filename.indexOf('.') >= 0 ? filename.substring(filename.lastIndexOf('.')) : "";
-    fileExtension = fileExtension.toLowerCase();
+    FileType fileType = FileType.getFileType(filename);
 
     Long startTime = System.currentTimeMillis();
-    log.info("Retrieving content from location: {}", url);
+    log.info("Retrieving content from location with type {} and url: {}", fileType, url);
     NewContextOptions contextOptions = new NewContextOptions();
     contextOptions.setScreenSize(browserWidth, browserHeight);
     contextOptions.setViewportSize(browserWidth, browserHeight);
@@ -89,7 +83,7 @@ public class PWScaper {
         BrowserContext context = browser.newContext(contextOptions);
         Page page = context.newPage(); ) {
 
-      if (!NON_HTML_EXTENSIONS.contains(fileExtension)) {
+      if (FileType.TEXT.equals(fileType)) {
         // Don't download images
         page.route(
             Pattern.compile(".*\\.(jpg|gif|png)"),
@@ -118,12 +112,12 @@ public class PWScaper {
         page.waitForSelector(waitSelector);
       }
 
-      switch (fileExtension.toLowerCase()) {
-        case "png":
-        case "jpg":
-        case "jpeg":
-          return getImage(page, pageResponse, fileExtension);
-        case "pdf":
+      switch (fileType) {
+        case PNG:
+        case JPEG:
+          return getImage(page, pageResponse, fileType);
+        case PDF:
+          return getPdf(page, pageResponse);
         default:
           return getHtml(page, pageResponse);
       }
@@ -158,11 +152,11 @@ public class PWScaper {
     return response.build();
   }
 
-  public jakarta.ws.rs.core.Response getImage(Page page, Response pageResponse, String extension) {
+  public jakarta.ws.rs.core.Response getImage(Page page, Response pageResponse, FileType fileType) {
     ScreenshotOptions options = new ScreenshotOptions();
     String mimeType;
     options.setFullPage(true);
-    if ("png".equals(extension)) {
+    if (FileType.PNG.equals(fileType)) {
       options.setType(ScreenshotType.PNG);
       mimeType = "image/png";
     } else {
