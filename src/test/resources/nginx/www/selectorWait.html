@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Wait for selector</title>
+    </head>
+    <body>
+        <p id="base"></p>
+        <script>
+            setTimeout(function(){
+                var base = document.getElementById("base")
+                var span = base.appendChild(document.createElement("span"))
+                span.setAttribute("id", "waitforme")
+                span.innerHTML = "Hello JavaScript!";
+            }, 2000);
+        </script> 
+    </body>
+</html>

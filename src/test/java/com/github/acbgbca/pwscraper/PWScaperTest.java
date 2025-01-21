@@ -177,6 +177,23 @@ class PWScaperTest {
     assertTrue(System.currentTimeMillis() > current + (wait * 1000));
   }
 
+  @Test
+  void testGetContentWaitForSelector() {
+    given()
+        .config(
+            RestAssuredConfig.config()
+                .httpClient(
+                    HttpClientConfig.httpClientConfig().setParam("http.connection.timeout", 60000)))
+        .when()
+        .get(
+            "/content?url={url}/selectorWait.html&waitSelector={selector}",
+            baseUrl.toString(),
+            "#waitforme")
+        .then()
+        .statusCode(200)
+        .body(containsString("<span id=\"waitforme\">Hello JavaScript!</span>"));
+  }
+
   @ParameterizedTest
   @EnumSource(Engine.class)
   void testGetContentReactBrowserOverride(Engine browser) {
