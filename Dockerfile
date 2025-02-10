@@ -1,11 +1,11 @@
-FROM maven:3.9.9-eclipse-temurin-21-jammy@sha256:e4c38c85407ab163697722eadd56a78ee5cd2e4ca0b4bb6a07c9a541bae16535 as downloadBrowsers
+FROM maven:3.9.9-eclipse-temurin-21-jammy@sha256:164799975dfa005f4c4c2e64f07ceff2fb29092f8f74a44fbb8fd95c3457b2a8 as downloadBrowsers
 
 COPY pom.xml createinstall.sh ./
 RUN mkdir -p /opt/playwright/browsers && chmod -R 777 /opt/playwright
 RUN ./createinstall.sh
 RUN PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install"
 
-FROM eclipse-temurin:21.0.5_11-jre-jammy@sha256:ebeb51a2a147be42b7d42342fecbeb2d9cb764f7742054024ac9a17bc1c8a21b
+FROM eclipse-temurin:21.0.6_7-jre-jammy@sha256:02fc89fa8766a9ba221e69225f8d1c10bb91885ddbd3c112448e23488ba40ab6
 
 ARG USERNAME=playwright
 ARG USER_UID=1000
