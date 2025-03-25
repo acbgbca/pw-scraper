@@ -11,7 +11,6 @@ import com.microsoft.playwright.Response;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.ScreenshotType;
-
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -75,11 +74,15 @@ public class PWScaper {
   @Path("/")
   @Produces(MediaType.TEXT_HTML)
   public TemplateInstance index() {
-    log.info("Returning index page with default width: {}, default height: {} and default browser: {}",
-        defaultWidth, defaultHeight, defaultBrowser);
-    return index.data("defaultWidth", defaultWidth)
-               .data("defaultHeight", defaultHeight)
-               .data("defaultBrowser", defaultBrowser.name());
+    log.info(
+        "Returning index page with default width: {}, default height: {} and default browser: {}",
+        defaultWidth,
+        defaultHeight,
+        defaultBrowser);
+    return index
+        .data("defaultWidth", defaultWidth)
+        .data("defaultHeight", defaultHeight)
+        .data("defaultBrowser", defaultBrowser.name());
   }
 
   @GET
@@ -97,7 +100,15 @@ public class PWScaper {
     FileType fileType = FileType.getFileType(filename);
 
     Long startTime = System.currentTimeMillis();
-    log.info("Retrieving content from location {} with type {} and arguements:\nwidth: {}, height: {}, browser: {}, withInSeconds: {}, waitSelector: {}", url, fileType, browserWidth, browserHeight, browserParam, waitInSeconds, waitSelector);
+    log.info(
+        "Retrieving content from location {} with type {} and arguements:\nwidth: {}, height: {}, browser: {}, withInSeconds: {}, waitSelector: {}",
+        url,
+        fileType,
+        browserWidth,
+        browserHeight,
+        browserParam,
+        waitInSeconds,
+        waitSelector);
     NewContextOptions contextOptions = new NewContextOptions();
     contextOptions.setScreenSize(browserWidth, browserHeight);
     contextOptions.setViewportSize(browserWidth, browserHeight);
