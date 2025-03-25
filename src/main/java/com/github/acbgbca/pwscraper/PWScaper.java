@@ -11,12 +11,19 @@ import com.microsoft.playwright.Response;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.ScreenshotType;
+
+import io.quarkus.qute.Location;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 import io.quarkus.runtime.util.StringUtil;
 import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -37,6 +44,10 @@ public class PWScaper {
 
   @ConfigProperty(name = "browser.default")
   private Engine defaultBrowser;
+
+  @Inject
+  @Location("index")
+  Template index;
 
   @PostConstruct
   public void init() {
@@ -61,6 +72,17 @@ public class PWScaper {
   }
 
   @GET
+  @Path("/")
+  @Produces(MediaType.TEXT_HTML)
+  public TemplateInstance index() {
+    log.info("Returning index page with default width: {}, default height: {} and default browser: {}",
+        defaultWidth, defaultHeight, defaultBrowser);
+    return index.data("defaultWidth", defaultWidth)
+               .data("defaultHeight", defaultHeight)
+               .data("defaultBrowser", defaultBrowser.name());
+  }
+
+  @GET
   @Path("/{file}")
   public jakarta.ws.rs.core.Response getHtml(
       @QueryParam("url") String url,
@@ -75,7 +97,7 @@ public class PWScaper {
     FileType fileType = FileType.getFileType(filename);
 
     Long startTime = System.currentTimeMillis();
-    log.info("Retrieving content from location with type {} and url: {}", fileType, url);
+    log.info("Retrieving content from location {} with type {} and arguements:\nwidth: {}, height: {}, browser: {}, withInSeconds: {}, waitSelector: {}", url, fileType, browserWidth, browserHeight, browserParam, waitInSeconds, waitSelector);
     NewContextOptions contextOptions = new NewContextOptions();
     contextOptions.setScreenSize(browserWidth, browserHeight);
     contextOptions.setViewportSize(browserWidth, browserHeight);
