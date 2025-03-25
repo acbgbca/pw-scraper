@@ -45,6 +45,10 @@
       <artifactId>playwright</artifactId>
       <version>1.51.0</version>
     </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.qute.web</groupId>
+      <artifactId>quarkus-qute-web</artifactId>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
