@@ -15,10 +15,10 @@
   <properties>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.22.3</quarkus.platform.version>
+    <quarkus.platform.version>3.23.4</quarkus.platform.version>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
     <failsafe-plugin.version>3.5.3</failsafe-plugin.version>
-    <testcontainers.version>1.21.0</testcontainers.version>
+    <testcontainers.version>1.21.2</testcontainers.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
@@ -87,7 +87,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.44.4</version>
+        <version>2.44.5</version>
         <configuration>
           <java>
             <cleanthat></cleanthat>
