@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/java:1-21-bullseye@sha256:f422b0e0d95add22ee7d770c2e346017721f908facee38e41f6c69630be29060
+FROM mcr.microsoft.com/devcontainers/java:1-21-bullseye@sha256:001181ad1701c5f814cab513302cf7bf6ccc6fdd8a43f60cc8874b57d2f313d9
 
 ARG INSTALL_MAVEN="true"
 ARG MAVEN_VERSION=""
