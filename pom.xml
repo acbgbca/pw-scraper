@@ -15,7 +15,7 @@
   <properties>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.23.4</quarkus.platform.version>
+    <quarkus.platform.version>3.24.1</quarkus.platform.version>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
     <failsafe-plugin.version>3.5.3</failsafe-plugin.version>
     <testcontainers.version>1.21.2</testcontainers.version>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.microsoft.playwright</groupId>
       <artifactId>playwright</artifactId>
-      <version>1.52.0</version>
+      <version>1.53.0</version>
     </dependency>
     <dependency>
       <groupId>io.quarkiverse.qute.web</groupId>
@@ -114,7 +114,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.26.0</version>
+        <version>3.27.0</version>
         <configuration>
           <format>net.sourceforge.pmd.renderers.SarifRenderer</format>
           <skipPmdError>true</skipPmdError>
@@ -131,7 +131,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.3.0</version>
+        <version>4.9.3.2</version>
         <configuration>
           <xmlOutput>true</xmlOutput>
           <htmlOutput>true</htmlOutput>
