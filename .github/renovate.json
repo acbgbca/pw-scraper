@@ -2,6 +2,7 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:best-practices",
+        "schedule:weekly",
         "group:all"
     ],
     "assignees": ["acbgbca"],
@@ -10,6 +11,8 @@
     "ignoreTests": false,
     "minimumReleaseAge": "3 days",
     "commitMessagePrefix": "[Renovate] ",
+    "rebaseWhen": "behind-base-branch",
     "automerge": true,
+    "automergeStrategy": "fast-forward",
     "platformAutomerge": false
 }
