@@ -15,7 +15,7 @@
   <properties>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.24.4</quarkus.platform.version>
+    <quarkus.platform.version>3.24.5</quarkus.platform.version>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
     <failsafe-plugin.version>3.5.3</failsafe-plugin.version>
     <testcontainers.version>1.21.3</testcontainers.version>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.microsoft.playwright</groupId>
       <artifactId>playwright</artifactId>
-      <version>1.53.0</version>
+      <version>1.54.0</version>
     </dependency>
     <dependency>
       <groupId>io.quarkiverse.qute.web</groupId>
@@ -87,7 +87,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.45.0</version>
+        <version>2.46.1</version>
         <configuration>
           <java>
             <cleanthat/>
