@@ -5,7 +5,7 @@ RUN mkdir -p /opt/playwright/browsers && chmod -R 777 /opt/playwright
 RUN ./createinstall.sh
 RUN PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install"
 
-FROM eclipse-temurin:21.0.7_6-jre-jammy@sha256:c4e6542e774de504da9b4729ff8d761287c965c1d788528ca78da30024efdb23
+FROM eclipse-temurin:21.0.8_9-jre-jammy@sha256:080ee1e167a9c858444a39c29be49f5a43bca81ea47aa2a6172fc04c987062c6
 
 ARG USERNAME=playwright
 ARG USER_UID=1000
