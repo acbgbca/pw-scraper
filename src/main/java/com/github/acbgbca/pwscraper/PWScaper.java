@@ -146,6 +146,7 @@ public class PWScaper {
         log.error("Error loading " + url, e);
         return jakarta.ws.rs.core.Response.serverError()
             .entity(String.format("Error loading page %s. Error: %s", url, e.getMessage()))
+            .header("Content-Type", "text/plain")
             .build();
       }
 
