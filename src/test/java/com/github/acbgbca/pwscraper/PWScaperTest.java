@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.NginxContainer;
 import org.testcontainers.containers.wait.strategy.HttpWaitStrategy;
@@ -32,6 +33,7 @@ class PWScaperTest {
         new NginxContainer<>(NGINX_IMAGE)
             .withFileSystemBind(
                 "src/test/resources/nginx/www", "/usr/share/nginx/html", BindMode.READ_ONLY)
+            .withFileSystemBind("src/test/resources/nginx/nginx.conf", "/etc/nginx/conf.d/default.conf", BindMode.READ_ONLY)
             .waitingFor(new HttpWaitStrategy());
     nginx.start();
     baseUrl = nginx.getBaseUrl("http", 80);
@@ -212,5 +214,22 @@ class PWScaperTest {
             containsString("<p>Edit <code>src/App.js</code> and save to reload.</p>"),
             containsString(
                 "<a class=\"App-link\" href=\"https://reactjs.org\" target=\"_blank\" rel=\"noopener noreferrer\">Learn React</a>"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {400, 401, 403, 404, 429, 500, 502, 503, 504})
+  void testHandlesResponseCodes(Integer responseCode) {
+    given()
+        .config(
+            RestAssuredConfig.config()
+                .httpClient(
+                    HttpClientConfig.httpClientConfig().setParam("http.connection.timeout", 60000)))
+        .when()
+        .get(
+            "/content?url={url}/errors/{response}.html",
+            baseUrl.toString(),
+            responseCode.toString())
+        .then()
+        .statusCode(responseCode);
   }
 }

@@ -7,6 +7,7 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.ScreenshotOptions;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.Response;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.LoadState;
@@ -128,8 +129,23 @@ public class PWScaper {
       }
 
       // Load page and wait for content to load
-      Response pageResponse = page.navigate(url);
-      page.waitForLoadState(LoadState.NETWORKIDLE);
+      Response pageResponse;
+      try  {
+        pageResponse = page.navigate(url);
+
+        if (!pageResponse.ok()) {
+          // An error occurred loading the page
+          ResponseBuilder response =
+          jakarta.ws.rs.core.Response.status(pageResponse.status()).entity(new String(pageResponse.body())).header("Content-Type", pageResponse.headerValue("Content-Type"));
+          return response.build();
+        }
+        page.waitForLoadState(LoadState.NETWORKIDLE);
+      } catch (PlaywrightException e) {
+        log.error("Error loading " + url, e);
+        return jakarta.ws.rs.core.Response.serverError().entity(String.format("Error loading page %s. Error: %s", url, e.getMessage())).build();
+        
+      }
+      
 
       // If user passed a selector, wait for the selector to be available
       if (!StringUtil.isNullOrEmpty(waitSelector)) {

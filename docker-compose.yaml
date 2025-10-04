@@ -9,3 +9,4 @@ services:
       - 6080:80
     volumes:
       - ./src/test/resources/nginx/www:/usr/share/nginx/html
+      - ./src/test/resources/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
