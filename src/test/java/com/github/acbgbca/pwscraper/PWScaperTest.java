@@ -33,7 +33,10 @@ class PWScaperTest {
         new NginxContainer<>(NGINX_IMAGE)
             .withFileSystemBind(
                 "src/test/resources/nginx/www", "/usr/share/nginx/html", BindMode.READ_ONLY)
-            .withFileSystemBind("src/test/resources/nginx/nginx.conf", "/etc/nginx/conf.d/default.conf", BindMode.READ_ONLY)
+            .withFileSystemBind(
+                "src/test/resources/nginx/nginx.conf",
+                "/etc/nginx/conf.d/default.conf",
+                BindMode.READ_ONLY)
             .waitingFor(new HttpWaitStrategy());
     nginx.start();
     baseUrl = nginx.getBaseUrl("http", 80);

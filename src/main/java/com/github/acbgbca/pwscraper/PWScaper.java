@@ -130,22 +130,24 @@ public class PWScaper {
 
       // Load page and wait for content to load
       Response pageResponse;
-      try  {
+      try {
         pageResponse = page.navigate(url);
 
         if (!pageResponse.ok()) {
           // An error occurred loading the page
           ResponseBuilder response =
-          jakarta.ws.rs.core.Response.status(pageResponse.status()).entity(new String(pageResponse.body())).header("Content-Type", pageResponse.headerValue("Content-Type"));
+              jakarta.ws.rs.core.Response.status(pageResponse.status())
+                  .entity(new String(pageResponse.body()))
+                  .header("Content-Type", pageResponse.headerValue("Content-Type"));
           return response.build();
         }
         page.waitForLoadState(LoadState.NETWORKIDLE);
       } catch (PlaywrightException e) {
         log.error("Error loading " + url, e);
-        return jakarta.ws.rs.core.Response.serverError().entity(String.format("Error loading page %s. Error: %s", url, e.getMessage())).build();
-        
+        return jakarta.ws.rs.core.Response.serverError()
+            .entity(String.format("Error loading page %s. Error: %s", url, e.getMessage()))
+            .build();
       }
-      
 
       // If user passed a selector, wait for the selector to be available
       if (!StringUtil.isNullOrEmpty(waitSelector)) {
