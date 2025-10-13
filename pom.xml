@@ -15,7 +15,7 @@
   <properties>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.28.2</quarkus.platform.version>
+    <quarkus.platform.version>3.28.3</quarkus.platform.version>
     <surefire-plugin.version>3.5.4</surefire-plugin.version>
     <failsafe-plugin.version>3.5.4</failsafe-plugin.version>
     <testcontainers.version>1.21.3</testcontainers.version>
@@ -114,7 +114,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.27.0</version>
+        <version>3.28.0</version>
         <configuration>
           <format>net.sourceforge.pmd.renderers.SarifRenderer</format>
           <skipPmdError>true</skipPmdError>
