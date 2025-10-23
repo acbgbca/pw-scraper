@@ -146,7 +146,7 @@ public class PWScaper {
                   .header("Content-Type", pageResponse.headerValue("Content-Type"));
           return response.build();
         }
-          page.waitForLoadState(LoadState.NETWORKIDLE);
+        page.waitForLoadState(LoadState.NETWORKIDLE);
       } catch (PlaywrightException e) {
         log.error("Error loading " + url, e);
         return jakarta.ws.rs.core.Response.serverError()
