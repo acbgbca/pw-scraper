@@ -32,7 +32,7 @@
 	},
 
 	// Install browser dependencies
-	"postCreateCommand": "sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args=\"install-deps\""
+	"postCreateCommand": "mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args=\"install-deps\""
 
 	// Configure tool-specific properties.
 

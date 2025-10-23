@@ -100,6 +100,11 @@ public class PWScaper {
     Integer browserHeight = heightParam != null ? heightParam : defaultHeight;
     FileType fileType = FileType.getFileType(filename);
 
+    if (url == null || url.isEmpty()) {
+      log.info("Ignoring request for empty URL at {}", filename);
+      return jakarta.ws.rs.core.Response.status(400).build();
+    }
+
     Long startTime = System.currentTimeMillis();
     log.info(
         "Retrieving content from location {} with type {} and arguements:\nwidth: {}, height: {}, browser: {}, withInSeconds: {}, waitSelector: {}",
@@ -141,7 +146,7 @@ public class PWScaper {
                   .header("Content-Type", pageResponse.headerValue("Content-Type"));
           return response.build();
         }
-        page.waitForLoadState(LoadState.NETWORKIDLE);
+          page.waitForLoadState(LoadState.NETWORKIDLE);
       } catch (PlaywrightException e) {
         log.error("Error loading " + url, e);
         return jakarta.ws.rs.core.Response.serverError()
