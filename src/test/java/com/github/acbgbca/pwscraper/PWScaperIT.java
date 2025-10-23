@@ -31,8 +31,7 @@ class PWScaperIT {
   @BeforeAll
   static void setup() throws MalformedURLException {
     environment =
-        new ComposeContainer(new File("docker-compose.yaml"))
-            .withExposedService("pwscraper", 8080);
+        new ComposeContainer(new File("docker-compose.yaml")).withExposedService("pwscraper", 8080);
     environment.withLogConsumer("pwscrapper", new Slf4jLogConsumer(logger));
     environment.start();
     String baseUrl =
