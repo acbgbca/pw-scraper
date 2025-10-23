@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 class PWScaperIT {
@@ -26,12 +26,12 @@ class PWScaperIT {
 
   private static RequestSpecification requestSpec;
 
-  public static DockerComposeContainer environment;
+  public static ComposeContainer environment;
 
   @BeforeAll
   static void setup() throws MalformedURLException {
     environment =
-        new DockerComposeContainer(new File("docker-compose.yaml"))
+        new ComposeContainer(new File("docker-compose.yaml"))
             .withExposedService("pwscraper", 8080);
     environment.withLogConsumer("pwscrapper", new Slf4jLogConsumer(logger));
     environment.start();
