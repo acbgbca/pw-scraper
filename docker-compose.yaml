@@ -4,7 +4,7 @@ services:
     ports:
       - 8080:8080
   nginx:
-    image: nginx@sha256:06aa3d7be10bc6307990c81bdca075793132e9163391abc370c015e344e23128
+    image: nginx@sha256:608a100c71651bf5b773c89083b4a1ad7ef4b2bd05d7a7e552271e03123692ad
     ports:
       - 6080:80
     volumes:
