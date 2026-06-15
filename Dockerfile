@@ -1,15 +1,15 @@
-FROM maven:3.9.9-eclipse-temurin-21-jammy@sha256:7f8422bd81f19b9035007a75e2f82272b09af64db08848d7d4e93302466e8b6f as downloadBrowsers
+FROM maven:3.9.16-eclipse-temurin-25-noble as downloadBrowsers
 
 COPY pom.xml createinstall.sh ./
 RUN mkdir -p /opt/playwright/browsers && chmod -R 777 /opt/playwright
 RUN ./createinstall.sh
 RUN PLAYWRIGHT_BROWSERS_PATH=/opt/playwright/browsers mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install"
 
-FROM eclipse-temurin:25.0.3_9-jre-jammy@sha256:c3e62cd0cece58d8de8d760ab95a5014f3b5a6ea32178f54270edb5b4aab9d1f
+FROM eclipse-temurin:25.0.3_9-jre-noble
 
 ARG USERNAME=playwright
-ARG USER_UID=1000
-ARG USER_GID=1000
+ARG USER_UID=999
+ARG USER_GID=999
 
 LABEL org.opencontainers.image.source=https://github.com/acbgbca/pw-scraper
 LABEL org.opencontainers.image.description="A service to scrap or screenshot dynamic websites using Microsoft Playwright."
