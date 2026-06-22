@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/java:25@sha256:02e4c51fa0f8aa41186d4b14d99923cb19034273d223bf21d87a10ddd70384bc
+FROM mcr.microsoft.com/devcontainers/java:25@sha256:816affc3f88ddcf9700e6b23ab171e94b1f84d0046a3a5973449fd12c365c5c0
 
 ARG INSTALL_MAVEN="true"
 ARG MAVEN_VERSION=""
