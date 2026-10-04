@@ -32,10 +32,10 @@ jobs:
     - name: Run test suite
       run: mvn -B -ntp clean verify --file pom.xml
     - name: Upload Spotbugs SARIF
-      uses: github/codeql-action/upload-sarif@b96794f015dfd88f77b49b1c93e0fa7110f94c63 # v4
+      uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
       with:
         sarif_file: target/spotbugsSarif.json
     - name: Upload PMD SARIF
-      uses: github/codeql-action/upload-sarif@b96794f015dfd88f77b49b1c93e0fa7110f94c63 # v4
+      uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
       with:
         sarif_file: target/pmd.sarif.json
