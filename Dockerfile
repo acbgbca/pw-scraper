@@ -1,4 +1,4 @@
-FROM maven:3.9.16-eclipse-temurin-25-noble@sha256:31618505df21177d2baa3dc574be2d0b0b32614c8539baca1f23a9136b766eb0 as downloadBrowsers
+FROM maven:3.10.0-eclipse-temurin-25-noble@sha256:a291659c5ffddf142e5174df5bfc3f3dcb48706e44868f341ef7914b39a254c9 as downloadBrowsers
 
 COPY pom.xml createinstall.sh ./
 RUN mkdir -p /opt/playwright/browsers && chmod -R 777 /opt/playwright
