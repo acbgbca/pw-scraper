@@ -15,9 +15,9 @@
   <properties>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.40.1</quarkus.platform.version>
-    <surefire-plugin.version>3.6.0</surefire-plugin.version>
-    <failsafe-plugin.version>3.6.0</failsafe-plugin.version>
+    <quarkus.platform.version>3.40.1.1</quarkus.platform.version>
+    <surefire-plugin.version>3.6.1</surefire-plugin.version>
+    <failsafe-plugin.version>3.6.1</failsafe-plugin.version>
     <testcontainers.version>2.0.5</testcontainers.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.microsoft.playwright</groupId>
       <artifactId>playwright</artifactId>
-      <version>1.63.0</version>
+      <version>1.64.0</version>
     </dependency>
     <dependency>
       <groupId>io.quarkiverse.qute.web</groupId>
