@@ -85,10 +85,7 @@
         <configuration>
           <java>
             <cleanthat/>
-            <googleJavaFormat>
-              <!-- https://github.com/google/google-java-format/releases -->
-              <version>1.20.0</version>
-            </googleJavaFormat>
+            <googleJavaFormat/>
             <importOrder/>
             <removeUnusedImports/>
           </java>

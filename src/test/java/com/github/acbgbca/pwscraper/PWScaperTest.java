@@ -87,9 +87,11 @@ class PWScaperTest {
         .get("/content?url={url}/javascript.html", baseUrl.toString())
         .then()
         .statusCode(200)
-        .body(containsString("""
-          <p id="change">Hello JavaScript!</p>
-          """));
+        .body(
+            containsString(
+                """
+                <p id="change">Hello JavaScript!</p>
+                """));
   }
 
   @ParameterizedTest
@@ -107,9 +109,11 @@ class PWScaperTest {
             browser.name())
         .then()
         .statusCode(200)
-        .body(containsString("""
-          <p id="change">Hello JavaScript!</p>
-          """));
+        .body(
+            containsString(
+                """
+                <p id="change">Hello JavaScript!</p>
+                """));
   }
 
   @Test
