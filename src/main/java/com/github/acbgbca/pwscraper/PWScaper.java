@@ -58,7 +58,7 @@ public class PWScaper {
 
   @GET
   @Path("/content/{file}")
-  @Deprecated()
+  @Deprecated
   public jakarta.ws.rs.core.Response getImagePdf(
       @QueryParam("url") String url,
       @QueryParam("width") Integer widthParam,
@@ -212,10 +212,10 @@ public class PWScaper {
     page.evaluate(
         String.format(
             """
-              const element = document.createElement('base');%n\
-              element.href = '%s';%n\
-              document.head.insertBefore(element, document.head.firstChild);%n\
-              """,
+            const element = document.createElement('base');%n\
+            element.href = '%s';%n\
+            document.head.insertBefore(element, document.head.firstChild);%n\
+            """,
             page.url()));
     ResponseBuilder response =
         jakarta.ws.rs.core.Response.ok(page.content(), pageResponse.headerValue("Content-Type"));

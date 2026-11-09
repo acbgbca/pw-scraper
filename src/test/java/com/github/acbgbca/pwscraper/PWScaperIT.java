@@ -87,9 +87,11 @@ class PWScaperIT {
         .get("/content?url=http://nginx/javascript.html")
         .then()
         .statusCode(200)
-        .body(containsString("""
-          <p id="change">Hello JavaScript!</p>
-          """));
+        .body(
+            containsString(
+                """
+                <p id="change">Hello JavaScript!</p>
+                """));
   }
 
   @ParameterizedTest(name = "get Javascript content with browser {0}")
@@ -104,9 +106,11 @@ class PWScaperIT {
         .get("/content?url={url}&browser={browser}", "http://nginx/javascript.html", browser.name())
         .then()
         .statusCode(200)
-        .body(containsString("""
-          <p id="change">Hello JavaScript!</p>
-          """));
+        .body(
+            containsString(
+                """
+                <p id="change">Hello JavaScript!</p>
+                """));
   }
 
   @Test
